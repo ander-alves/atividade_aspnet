@@ -3,10 +3,15 @@ using blogPessoal.Validator;
 using FluentValidation;
 using GamesGen.Data;
 using GamesGen.Model;
+using GamesGen.Security;
+using GamesGen.Security.Implements;
 using GamesGen.Service;
 using GamesGen.Service.Implements;
 using GamesGen.Validator;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace GamesGen
 {
@@ -37,11 +42,35 @@ namespace GamesGen
             //Registrar a validacao das entidades
             builder.Services.AddTransient<IValidator<Categoria>, CategoriaValidator>();
             builder.Services.AddTransient<IValidator<Produto>, ProdutoValidator>();
+            builder.Services.AddTransient<IValidator<User>, UserValidator>();
 
 
             //Registrar as classes de Servico
-             builder.Services.AddScoped<ICategoriaService, CategoriaService>();
-             builder.Services.AddScoped<IProdutoService, ProdutoService>();
+            builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+            builder.Services.AddScoped<IProdutoService, ProdutoService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddTransient<IAuthService, AuthService>();
+
+            // Adicionar a Validação do Token JWT
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                var Key = Encoding.UTF8.GetBytes(Settings.Secret);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Key)
+                };
+            });
+
 
             // builder.Services.AddScoped<ITemaService, TemaService>();
 

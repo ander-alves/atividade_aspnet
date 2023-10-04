@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
 using GamesGen.Model;
 using GamesGen.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesGen.Controllers
 {
+    [Authorize]
     [Route("~/produtos")]
     [ApiController]
     public class ProdutoController : ControllerBase
