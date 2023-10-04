@@ -38,7 +38,7 @@ namespace GamesGen.Service.Implements
         {
             var tema = await _context.Categoria
                  .Include(t => t.Produto)
-                 .Where(p => p.Tipo.Contains(nome))
+                 .Where(p => p.Nome.Contains(nome))
                  .ToListAsync();
             return tema;
         }

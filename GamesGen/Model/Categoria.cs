@@ -8,14 +8,13 @@ namespace GamesGen.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        [StringLength(50)]
-        public string Tipo { get; set; } = string.Empty;
+        [Column(TypeName = "varchar")]
+        [StringLength(255)]
+        public string Nome { get; set; } = string.Empty;
 
         [InverseProperty("Categoria")]
-        [JsonIgnore]
         public virtual ICollection<Produto>? Produto { get; set; }
-
     }
 }

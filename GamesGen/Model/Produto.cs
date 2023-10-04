@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+using GamesGen.Util;
 
 namespace GamesGen.Model
 {
@@ -9,22 +11,29 @@ namespace GamesGen.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        [Column(TypeName = "varchar(100)")]
-        public string Nome { get; set; }
+        [Column(TypeName = "varchar")]
+        [StringLength(255)]
+        public string Nome { get; set; } = string.Empty;
 
-        [Column(TypeName = "varchar(100)")]
-        public string Descricao { get; set; }
+        [Column(TypeName = "varchar")]
+        [StringLength(1000)]
+        public string Descricao { get; set; } = string.Empty;
 
-        /*[Column(TypeName = "varchar(100)")]
-        public string Console { get; set; }
+        [Column(TypeName = "varchar")]
+        [StringLength(255)]
+        public string Console { get; set; } = string.Empty;
 
+        [Column(TypeName = "date")]
+        [JsonConverter(typeof(DateOnlyJsonConverter))]
         public DateTime DataLancamento { get; set; }
 
+        [Column(TypeName = "decimal(8,2)")]
         public decimal Preco { get; set; }
 
-        [Column(TypeName = "varchar(255)")]
-        public string Foto { get; set; }*/
+        [Column(TypeName = "varchar")]
+        [StringLength(5000)]
+        public string Foto { get; set; } = string.Empty;
 
-       public virtual Categoria? Categoria { get; set; }
+        public virtual Categoria? Categoria { get; set; }
     }
 }

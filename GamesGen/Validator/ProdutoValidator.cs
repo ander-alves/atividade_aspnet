@@ -7,15 +7,20 @@ namespace blogPessoal.Validator
     {
         public ProdutoValidator()
         {
+
             RuleFor(p => p.Nome)
-                .NotEmpty()
-                .MinimumLength(05)
-                .MaximumLength(100);
+                .NotEmpty();
 
             RuleFor(p => p.Descricao)
-                .NotEmpty()
-                .MinimumLength(10)
-                .MaximumLength(1000);
+                .NotEmpty();
+
+            RuleFor(p => p.Console)
+                .NotEmpty();
+
+            RuleFor(p => p.Preco)
+                .NotNull()
+                .GreaterThan(0)
+                .PrecisionScale(20, 2, false); ;
         }
     }
 }
